@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checklist Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    .passed { color: green; }
+    .failed { color: red; }
+  </style>
+</head>
+<body>
+  <h1>Checklist Dashboard</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Rule</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="checklist-results">
+    </tbody>
+  </table>
+
+  <script>
+    async function loadChecklist() {
+      const response = await fetch('/checklist/67339ae56d5231c1a2c63639');
+      const data = await response.json();
+      const resultsTable = document.getElementById('checklist-results');
+
+      data.forEach(rule => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${rule.ruleName}</td>
+          <td class="${rule.status.toLowerCase()}">${rule.status}</td>
+        `;
+        resultsTable.appendChild(row);
+      });
+    }
+
+    loadChecklist();
+  </script>
+</body>
+</html>
